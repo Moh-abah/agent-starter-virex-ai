@@ -176,18 +176,20 @@ export const PopupView = ({
                 filter: 'blur(0px)',
               }}
               transition={{
-                opacity: {
-                  ease: 'linear',
-                  duration: 0.2,
-                },
-                maskImage: {
-                  ease: 'linear',
-                  duration: 1,
-                },
-                filter: {
-                  ease: 'linear',
-                  duration: 1,
-                },
+    
+              opacity: {
+                ease: [0.25, 0.1, 0.25, 1],
+                duration: 0.2,
+              },
+              maskImage: {
+                ease: [0.25, 0.1, 0.25, 1],
+                duration: 1,
+              },
+              filter: {
+                ease: [0.25, 0.1, 0.25, 1],
+                duration: 1,
+              },
+
               }}
               className="border-separator1 dark:border-separator2 pointer-events-none absolute inset-1 drop-shadow-lg/20"
             >
