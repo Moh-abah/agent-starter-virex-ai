@@ -20,15 +20,12 @@ export async function POST(req: Request) {
       throw new Error('Missing LiveKit environment variables');
     }
 
-    // قراءة agentName من الطلب (إذا ورد)
     const body = await req.json();
     const agentName = body?.room_config?.agents?.[0]?.agent_name || 'VIREX-AI';
 
-    // إنشاء غرفة جديدة باسم فريد
     const roomName = `voice_assistant_room_${Date.now()}_${Math.floor(Math.random() * 10000)}`;
     const participantIdentity = `user_${Math.random().toString(36).substring(2, 8)}`;
 
-    // 1. توليد توكن للمستخدم
     const at = new AccessToken(API_KEY, API_SECRET, {
       identity: participantIdentity,
       name: 'user',
@@ -43,7 +40,6 @@ export async function POST(req: Request) {
     });
     const participantToken = await at.toJwt();
 
-    // 2. استدعاء الوكيل مباشرة (Explicit Dispatch)
     const dispatchClient = new AgentDispatchClient(LIVEKIT_URL, API_KEY, API_SECRET);
     await dispatchClient.createDispatch(roomName, agentName, {
       metadata: JSON.stringify({ source: 'virex-website' }),
@@ -58,9 +54,10 @@ export async function POST(req: Request) {
     return NextResponse.json(data, { headers: { 'Cache-Control': 'no-store' } });
   } catch (error) {
     console.error(error);
+    // prettier-ignore
     return new NextResponse(
       error instanceof Error ? error.message : 'Internal error',
-      { status: 500 },
+      { status: 500 }
     );
   }
 }
