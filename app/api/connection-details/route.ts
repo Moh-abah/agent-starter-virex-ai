@@ -46,7 +46,7 @@ export async function POST(req: Request) {
     // 2. استدعاء الوكيل مباشرة (Explicit Dispatch)
     const dispatchClient = new AgentDispatchClient(LIVEKIT_URL, API_KEY, API_SECRET);
     await dispatchClient.createDispatch(roomName, agentName, {
-      metadata: JSON.stringify({ source: 'virex-website' })
+      metadata: JSON.stringify({ source: 'virex-website' }),
     });
 
     const data: ConnectionDetails = {
@@ -58,6 +58,9 @@ export async function POST(req: Request) {
     return NextResponse.json(data, { headers: { 'Cache-Control': 'no-store' } });
   } catch (error) {
     console.error(error);
-    return new NextResponse(error instanceof Error ? error.message : 'Internal error', { status: 500 });
+    return new NextResponse(
+      error instanceof Error ? error.message : 'Internal error',
+      { status: 500 },
+    );
   }
 }
